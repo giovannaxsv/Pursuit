@@ -1,5 +1,8 @@
 #include "Player.h"
 
+
+/// outro teste ...
+
 Player* Player::m_players[] = { nullptr, nullptr };
 QMutex& Player::m_mutex = *(new QMutex()); // ugly hack
 
