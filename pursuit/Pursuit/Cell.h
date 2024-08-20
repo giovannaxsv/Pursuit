@@ -40,7 +40,7 @@ public:
 
     Cell::State state() const { return m_state; }
     bool isEmpty() const { return m_state == Cell::Empty; }
-    //bool isBlocked() const { return m_state == Cell::Blocked; }
+    bool isBlocked() const { return m_state == Cell::Blocked; }
     bool isUsed() const { return m_state == Cell::Used; }
 
 public slots:
