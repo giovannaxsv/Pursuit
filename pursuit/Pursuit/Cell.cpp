@@ -1,6 +1,8 @@
 #include "Cell.h"
 #include "Player.h"
 
+//teste
+
 Cell::Cell(QWidget *parent)
         : QPushButton(parent),
           m_row(-1), m_col(-1),
