@@ -65,8 +65,8 @@ void Pursuit::movePlayerToCell(Cell* cell) {
         // Mover o jogador para a nova célula
         cell->setPlayer(m_player);
         // Primeiro, limpar as células jogáveis para mover
-         clearPlayableCells();
 
+         clearPlayableCells();
         // Marcar células bloqueadas adjacentes como jogáveis
          markAdjacentBlockedCells(cell);
     }
@@ -148,7 +148,6 @@ void Pursuit::reset() {
     }
 
     m_player = Player::player(Player::Red);
-
     m_board[0][3]->setState(Cell::Blocked);
     m_board[1][3]->setPlayer(m_player);
     m_board[5][3]->setPlayer(m_player->other());
@@ -211,7 +210,7 @@ void Pursuit::findPlayablePositions() {
             if (newRow < 0 || newRow >= 7 || newCol < 0 || newCol >= 7) break;
             if((m_board[newRow][newCol]->player())){
                 m_board[newRow][newCol]->setPlayable(true);
-               findOpponent = true;
+               findOpponent = true;//se encontrar um oponente no caminho, aquela é a posição jogavel
                 break;
             }
             else{
