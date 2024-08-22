@@ -43,14 +43,36 @@ Pursuit::Pursuit(QWidget *parent)
 
     this->adjustSize();
     this->setFixedSize(this->size());
+
 }
 
 Pursuit::~Pursuit() {
     delete ui;
 }
+
+
+
+void Pursuit::play(int id) {
+    Cell* cell = m_board[id / 7][id % 7];
+    if (cell->isBlocked() && cell->isPlayable()) {
+        cell->setState(Cell::Empty);
+        emit turnEnded();
+    }else{
+        // Se a célula for jogável, mova o jogador para essa célula
+         movePlayerToCell(cell);
+    }
+}
 void Pursuit::movePlayerToCell(Cell* cell) {
+    bool catchOpponent = false;
     // Verificar se a célula é jogável
     if (cell->isPlayable()) {
+
+        if(cell->player()){
+            catchOpponent = true; //capturou o oponente
+        }else{
+            catchOpponent = false;//capturou o oponente
+        }
+
         // Remover o jogador da célula atual
         for (int row = 0; row < 7; ++row) {
             for (int col = 0; col < 7; ++col) {
@@ -64,25 +86,16 @@ void Pursuit::movePlayerToCell(Cell* cell) {
 
         // Mover o jogador para a nova célula
         cell->setPlayer(m_player);
+        if(catchOpponent == true){
+            gameOver();
+        }else{
         // Primeiro, limpar as células jogáveis para mover
-
          clearPlayableCells();
         // Marcar células bloqueadas adjacentes como jogáveis
          markAdjacentBlockedCells(cell);
+        }
     }
 }
-
-void Pursuit::play(int id) {
-    Cell* cell = m_board[id / 7][id % 7];
-    if (cell->isBlocked() && cell->isPlayable()) {
-        cell->setState(Cell::Empty);
-        emit turnEnded();
-    }else{
-        // Se a célula for jogável, mova o jogador para essa célula
-         movePlayerToCell(cell);
-    }
-}
-
 void Pursuit::clearPlayableCells() {
     for (int row = 0; row < 7; ++row) {
         for (int col = 0; col < 7; ++col) {
@@ -132,6 +145,25 @@ void Pursuit::switchPlayer() {
     // Reinicia a busca para o próximo jogador
     findPlayablePositions();
 
+    // Verifica se há células jogáveis
+        bool hasPlayableCells = false;
+        for (int row = 0; row < 7; ++row) {
+            for (int col = 0; col < 7; ++col) {
+                if (m_board[row][col]->isPlayable()) {
+                    hasPlayableCells = true;
+                    break;
+                }
+            }
+            if (hasPlayableCells) break;
+        }
+
+        // Se não houver células jogáveis, finaliza o jogo
+        if (!hasPlayableCells) {
+            gameOver();
+        } else {
+            // Atualiza a barra de status.
+            this->updateStatusBar();
+        }
 
 
 }
@@ -159,6 +191,15 @@ void Pursuit::reset() {
     findPlayablePositions();
 }
 
+
+void Pursuit::gameOver() {
+    QString winnerMessage = tr("%1 venceu o jogo!").arg(m_player->name());
+    QMessageBox::information(nullptr, "FIM DE JOGO", winnerMessage,
+                             QMessageBox::Ok);
+    reset();
+}
+
+
 void Pursuit::showAbout() {
     QMessageBox::information(this, tr("About"),
         tr("Pursuit\n\n Giovanna Laura \n Thainá Martins\n"));
@@ -166,7 +207,7 @@ void Pursuit::showAbout() {
 
 void Pursuit::updateStatusBar() {
     ui->statusbar->showMessage(tr("Vez do %1")
-        .arg(m_player->name()));
+        .arg(m_player->name()) );
 }
 
 void Pursuit::findPlayablePositions() {
@@ -221,6 +262,7 @@ void Pursuit::findPlayablePositions() {
 
             furthestRow = row;
             furthestCol = col;
+
         }
 
         // Verifica se a posição mais distante encontrada tem vizinhos bloqueados
@@ -243,4 +285,6 @@ void Pursuit::findPlayablePositions() {
             }
         }
     }
+
+
 }

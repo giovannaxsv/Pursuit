@@ -33,6 +33,7 @@ private slots:
     void switchPlayer();
     void reset();
     void clearPlayableCells();
+    void gameOver();
 
 
     void showAbout();
