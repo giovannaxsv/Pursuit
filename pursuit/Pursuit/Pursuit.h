@@ -24,11 +24,16 @@ private:
     Ui::Pursuit *ui;
     Player* m_player;
     Cell* m_board[7][7];
+    void findPlayablePositions();
+    void movePlayerToCell(Cell* cell);
+    void markAdjacentBlockedCells(Cell* cell);
 
 private slots:
     void play(int id);
     void switchPlayer();
     void reset();
+    void clearPlayableCells();
+
 
     void showAbout();
     void updateStatusBar();
