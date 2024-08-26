@@ -15,7 +15,7 @@ public:
         Blue
     };
     Q_ENUM(Type)
-
+ 
     virtual ~Player();
     static Player* player(Player::Type type);
 

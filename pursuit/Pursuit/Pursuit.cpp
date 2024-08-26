@@ -193,8 +193,8 @@ void Pursuit::reset() {
 
 
 void Pursuit::gameOver() {
-    QString winnerMessage = tr("%1 venceu o jogo!").arg(m_player->name());
-    QMessageBox::information(nullptr, "FIM DE JOGO", winnerMessage,
+    QString winnerMessage = tr("Parabéns, o %1 venceu o jogo!").arg(m_player->name());
+    QMessageBox::information(nullptr, "Vencedor", winnerMessage,
                              QMessageBox::Ok);
     reset();
 }
@@ -202,7 +202,7 @@ void Pursuit::gameOver() {
 
 void Pursuit::showAbout() {
     QMessageBox::information(this, tr("About"),
-        tr("Pursuit\n\n Giovanna Laura \n Thainá Martins\n"));
+        tr("Pursuit\n\n Giovanna Laura. Email: giovanna.silva@aluno.cefetmg.br \n Thainá Martins. Email: thaina.farias@aluno.cefetmg.br\n"));
 }
 
 void Pursuit::updateStatusBar() {
@@ -279,7 +279,7 @@ void Pursuit::findPlayablePositions() {
                     break;
                 }
             }
-            // Se tiver pelo menos um vizinho bloqueado, marca a célula como jogável
+            // Se tiver pelo menos um vizinho bloqueado(peça preta), marca a célula como jogável
             if (hasBlockedNeighbor) {
                 m_board[furthestRow][furthestCol]->setPlayable(true);
             }
